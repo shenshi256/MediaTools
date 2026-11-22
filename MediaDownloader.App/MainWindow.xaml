@@ -1,0 +1,220 @@
+<Window x:Class="MediaDownloader.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:MediaDownloader.App.Converters"
+        xmlns:views="clr-namespace:MediaDownloader.App.Views"
+        Title="MediaTools · 媒体工具箱"
+        Height="700" Width="1000" MinWidth="400" MinHeight="300"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource App.Bg}"
+        Foreground="{StaticResource App.Text}"
+        FontFamily="{StaticResource UiFont}" FontSize="13"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True">
+
+    <Window.Resources>
+        <conv:PageKeyToVisibilityConverter x:Key="PageVis"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="102.19"/>
+            <ColumnDefinition Width="71.81"/>
+            <ColumnDefinition Width="58.277"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 左侧导航 -->
+        <Border Background="{StaticResource App.SurfaceAlt}"
+                BorderBrush="{StaticResource App.Border}" BorderThickness="0,0,1,0" Grid.ColumnSpan="3">
+            <DockPanel>
+
+                <!-- 底部固定在导航最下方 -->
+                <Border DockPanel.Dock="Bottom" Padding="8,8,8,10"
+                        BorderBrush="{StaticResource App.Border}" BorderThickness="0,1,0,0">
+                    <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}"
+                                 GroupName="Nav" Tag="Settings" Checked="Nav_Checked">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                  Margin="0,0,10,0"
+                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                  Data="M8,5.8 A2.2,2.2 0 1 0 8,10.2 A2.2,2.2 0 1 0 8,5.8 Z
+                                        M8,1.6 V3.6 M8,12.4 V14.4 M1.6,8 H3.6 M12.4,8 H14.4
+                                        M3.5,3.5 L4.9,4.9 M11.1,11.1 L12.5,12.5 M12.5,3.5 L11.1,4.9 M4.9,11.1 L3.5,12.5"/>
+                            <TextBlock Text="设置" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                </Border>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8,8,8,8">
+                    <StackPanel>
+
+                        <!-- 分组一：数据下载 -->
+                        <Expander Style="{StaticResource NavGroup}" Header="数据下载" IsExpanded="True">
+                            <Border Style="{StaticResource NavChildHost}">
+                                <StackPanel>
+                                    <RadioButton x:Name="NavDouyin" Style="{StaticResource NavItem}"
+                GroupName="Nav" Tag="Douyin" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                 Margin="0,0,10,0"
+                 Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                 Data="M6.4,2.8 V11.2 M6.4,2.8 L12.6,1.6 V9.8
+                       M6.4,11.2 A2.2,2.2 0 1 1 2,11.2 A2.2,2.2 0 1 1 6.4,11.2 Z
+                       M12.6,9.8 A2.2,2.2 0 1 1 8.2,9.8 A2.2,2.2 0 1 1 12.6,9.8 Z"/>
+                                            <TextBlock Text="抖音" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+
+                                    <RadioButton x:Name="NavYoutube" Style="{StaticResource NavItem}"
+               GroupName="Nav" Tag="Youtube" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                Margin="0,0,10,0"
+                Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                Data="M3.2,3.6 H12.8 A1.8,1.8 0 0 1 14.6,5.4 V10.6 A1.8,1.8 0 0 1 12.8,12.4
+                      H3.2 A1.8,1.8 0 0 1 1.4,10.6 V5.4 A1.8,1.8 0 0 1 3.2,3.6 Z
+                      M6.6,6.2 L9.9,8 L6.6,9.8 Z"/>
+                                            <TextBlock Text="YouTube" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+
+                                    <RadioButton x:Name="NavBilibili" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Bilibili" IsChecked="True"
+                                                 Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M3.4,4.6 H12.6 A1.9,1.9 0 0 1 14.5,6.5 V11.6 A1.9,1.9 0 0 1 12.6,13.5
+                                                        H3.4 A1.9,1.9 0 0 1 1.5,11.6 V6.5 A1.9,1.9 0 0 1 3.4,4.6 Z
+                                                        M4.8,1.9 L7.1,4.3 M11.2,1.9 L8.9,4.3"/>
+                                            <TextBlock Text="哔哩哔哩" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+                                    <RadioButton x:Name="NavToutiao" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Toutiao" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M2.4,3.4 H13.6 A1.6,1.6 0 0 1 15.2,5.0 V11.2 A1.6,1.6 0 0 1 13.6,12.8
+                                                        H2.4 A1.6,1.6 0 0 1 0.8,11.2 V5.0 A1.6,1.6 0 0 1 2.4,3.4 Z
+                                                        M4.2,6.2 H11.8 M4.2,8.3 H11.8 M4.2,10.4 H7.8"/>
+                                            <TextBlock Text="今日头条" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+
+                                    <RadioButton x:Name="NavTencent" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Tencent" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M2.6,3.6 H13.4 A1.4,1.4 0 0 1 14.8,5 V11 A1.4,1.4 0 0 1 13.4,12.4
+                                                        H2.6 A1.4,1.4 0 0 1 1.2,11 V5 A1.4,1.4 0 0 1 2.6,3.6 Z
+                                                        M4.6,3.6 V12.4 M11.4,3.6 V12.4
+                                                        M1.2,6.6 H4.6 M1.2,9.4 H4.6 M11.4,6.6 H14.8 M11.4,9.4 H14.8"/>
+                                            <TextBlock Text="腾讯视频" VerticalAlignment="Center"/>
+                                            <Border Style="{StaticResource TagChip}" Margin="8,0,0,0">
+                                                <TextBlock Text="仅免费" FontSize="10"
+                                                           Foreground="{StaticResource App.Text3}"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </RadioButton>
+                                </StackPanel>
+                            </Border>
+                        </Expander>
+
+                        <!-- 分组二：视频工具 -->
+                        <Expander Style="{StaticResource NavGroup}" Header="视频工具" IsExpanded="True">
+                            <Border Style="{StaticResource NavChildHost}">
+                                <StackPanel>
+                                    <RadioButton x:Name="NavTrim" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Trim" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M3,2.5 V13.5 M13,2.5 V13.5 M6,5.5 H10 M6,10.5 H10"/>
+                                            <TextBlock Text="视频截取" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+
+                                    <RadioButton x:Name="NavMerge" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Merge" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M3,4.5 H6 A1.5,1.5 0 0 1 7.5,6 V10 A1.5,1.5 0 0 1 6,11.5 H3
+                                                        A1.5,1.5 0 0 1 1.5,10 V6 A1.5,1.5 0 0 1 3,4.5 Z
+                                                        M10,4.5 H13 A1.5,1.5 0 0 1 14.5,6 V10 A1.5,1.5 0 0 1 13,11.5 H10
+                                                        A1.5,1.5 0 0 1 8.5,10 V6 A1.5,1.5 0 0 1 10,4.5 Z"/>
+                                            <TextBlock Text="视频合并" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+
+                                    <RadioButton x:Name="NavSeparate" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Separate" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M2,8 H5 M7,4.5 V11.5 M11,8 H14 M9.5,6.2 L11,8 L9.5,9.8"/>
+                                            <TextBlock Text="音视分离" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+
+                                    <RadioButton x:Name="NavCompress" Style="{StaticResource NavItem}"
+                                                 GroupName="Nav" Tag="Compress" Checked="Nav_Checked">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Width="16" Height="16" Stretch="Uniform" StrokeThickness="1.4"
+                                                  Margin="0,0,10,0"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                                  Data="M3.5,2.8 H12.5 A1.4,1.4 0 0 1 13.9,4.2 V11.8 A1.4,1.4 0 0 1 12.5,13.2
+                                                        H3.5 A1.4,1.4 0 0 1 2.1,11.8 V4.2 A1.4,1.4 0 0 1 3.5,2.8 Z
+                                                        M5.6,6.9 H10.4 M8,4.6 V11.6"/>
+                                            <TextBlock Text="视频压缩" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </RadioButton>
+                                </StackPanel>
+                            </Border>
+                        </Expander>
+                        <Expander Style="{StaticResource NavGroup}" Header="音频工具" IsExpanded="True">
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!--
+          右侧内容区。
+          注意：视频工具三页把 DataContext 换成了 Tools，所以 Visibility 不能再用默认数据源，
+          否则会去 VideoToolsViewModel 上找 CurrentPageKey，绑定失败后退回 Visible，
+          导致几页全部堆叠。这里统一显式指向窗口的 DataContext。
+        -->
+        <Grid Grid.Column="3" x:Name="PageHost">
+            <views:BilibiliPage
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Bilibili}"/>
+            <views:YoutubePage DataContext="{Binding Youtube}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Youtube}"/>
+            <views:DouyinPage DataContext="{Binding Douyin}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Douyin}"/>
+            <views:ToutiaoPage DataContext="{Binding Toutiao}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Toutiao}"/>
+            <views:TencentPage DataContext="{Binding Tencent}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Tencent}"/>
+            <views:TrimPage DataContext="{Binding Tools}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Trim}"/>
+            <views:MergePage DataContext="{Binding Tools}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Merge}"/>
+            <views:SeparatePage DataContext="{Binding Tools}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Separate}"/>
+            <views:CompressPage DataContext="{Binding Compress}"
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Compress}"/>
+            <views:SettingsPage
+                Visibility="{Binding DataContext.CurrentPageKey, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PageVis}, ConverterParameter=Settings}"/>
+        </Grid>
+    </Grid>
+</Window>

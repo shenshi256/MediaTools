@@ -1,0 +1,54 @@
+# ============ 构建产物 ============
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+publish/
+publish-single/
+*.user
+*.suo
+
+# ============ IDE / 编辑器 ============
+.vs/
+.idea/
+*.resharper*
+*.dotCover.*
+*.userprefs
+
+# ============ .NET 专项 ============
+*.dll
+*.exe
+*.pdb
+*.cache
+*.nupkg
+project.lock.json
+*.metaproj
+*.tmp
+
+# ============ 随包下载引擎（大二进制，不提交）============
+# 这三个是外置原生工具，体积大、可随时从官网重下，不进仓库
+tools/ffmpeg/
+tools/node/
+tools/yt-dlp/
+
+# ============ 运行时/临时 ============
+down/
+logs/
+*.log
+*.jjprog
+*.tmp
+_temp*/
+_tmp*/
+generated-images/
+
+# ============ 本地个人数据（不提交）============
+.workbuddy/
+
+# ============ 文档/说明（不提交）============
+docs/
+.github/
+
+# ============ 系统 ============
+Thumbs.db
+Desktop.ini
+.DS_Store

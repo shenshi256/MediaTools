@@ -1,0 +1,218 @@
+<UserControl x:Class="MediaDownloader.App.Views.DouyinPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="{StaticResource UiFont}" FontSize="13">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+
+    <Grid Margin="22,18,22,14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 页头 -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Style="{StaticResource PageTitle}" Text="抖音下载"/>
+            <TextBlock Style="{StaticResource PageSub}"
+                       Text="粘贴 douyin.com 链接、v.douyin.com 短链、分享口令或作品 ID，回车解析"/>
+        </StackPanel>
+
+        <!-- 输入 -->
+        <Border Grid.Row="1" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Style="{StaticResource Input}"
+                         Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding ParseCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <Button Grid.Column="1" Style="{StaticResource BtnPrimary}" Content="解析"
+                        MinWidth="80" Margin="10,0,0,0" Command="{Binding ParseCommand}"/>
+
+                <Button Grid.Column="2" Style="{StaticResource Btn}"
+                        Content="{Binding LoginStatus}" MinWidth="150" Margin="8,0,0,0"
+                        Command="{Binding LoginCommand}"/>
+
+                <Button Grid.Column="3" Style="{StaticResource Btn}" Content="退出登录"
+                        MinWidth="80" Margin="8,0,0,0" Command="{Binding LogoutCommand}"/>
+            </Grid>
+        </Border>
+
+        <!-- 视频信息 -->
+        <Border Grid.Row="2" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                               VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="{Binding VideoTitle}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoTitle}" Value="">
+                                        <Setter Property="Text" Value="（尚未解析视频）"/>
+                                        <Setter Property="Foreground" Value="{StaticResource App.Text3}"/>
+                                        <Setter Property="FontWeight" Value="Normal"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <Button Grid.Column="1" Style="{StaticResource BtnPrimary}" Content="下载"
+                            MinWidth="90" Margin="12,0,0,0" Command="{Binding DownloadCommand}"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Style="{StaticResource FieldLabel}" Text="作品信息"/>
+                    <TextBlock Grid.Column="1" Style="{StaticResource Kv}" Text="{Binding VideoInfo}"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <TextBlock Grid.Column="2" Style="{StaticResource FieldLabel}" Text="清晰度"
+                               MinWidth="0" Margin="16,0,10,0"/>
+                    <ComboBox Grid.Column="3" Width="210" Style="{StaticResource Combo}"
+                              ItemsSource="{Binding Qualities}" SelectedItem="{Binding SelectedQuality}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- 任务列表 -->
+        <Border Grid.Row="3" Style="{StaticResource CardFlush}" ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Padding="16,12" BorderBrush="{StaticResource App.Border}"
+                        BorderThickness="0,0,0,1">
+                    <TextBlock Style="{StaticResource CardTitle}" Text="下载任务" Margin="0"/>
+                </Border>
+
+                <Border Grid.Row="1" Padding="12,8" Margin="0,0,10,0"
+                        BorderBrush="{StaticResource App.Border}" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="78"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="186"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource Hint}" Text="名称"/>
+                        <TextBlock Grid.Column="1" Style="{StaticResource Hint}" Text="清晰度"/>
+                        <TextBlock Grid.Column="2" Style="{StaticResource Hint}" Text="进度"/>
+                        <TextBlock Grid.Column="3" Style="{StaticResource Hint}" Text="速度"/>
+                        <TextBlock Grid.Column="4" Style="{StaticResource Hint}" Text="状态"/>
+                    </Grid>
+                </Border>
+
+                <ListBox Grid.Row="2" Style="{StaticResource FlatList}" ItemsSource="{Binding Tasks}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource FlatListItem}">
+                            <Setter Property="Padding" Value="12,9"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="78"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="186"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" Margin="0,0,12,0"
+                                           ToolTip="{Binding OutputPath}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding QualityName}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Foreground="{StaticResource App.Text2}"/>
+
+                                <Grid Grid.Column="2" Margin="0,0,14,0" VerticalAlignment="Center"
+                                      ToolTip="{Binding SizeText}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ProgressBar Style="{StaticResource Progress}" VerticalAlignment="Center"
+                                                 Minimum="0" Maximum="100" Value="{Binding Percent, Mode=OneWay}"/>
+                                    <TextBlock Grid.Column="1" Style="{StaticResource Hint}" Margin="8,0,0,0"
+                                               MinWidth="34" TextAlignment="Right"
+                                               Text="{Binding Percent, StringFormat={}{0:F0}%}"/>
+                                </Grid>
+
+                                <TextBlock Grid.Column="3" Style="{StaticResource Hint}" Text="{Binding SpeedText}"/>
+                                <TextBlock Grid.Column="4" Style="{StaticResource Hint}" Text="{Binding StateText}"/>
+
+                                <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Style="{StaticResource BtnSm}" Content="{Binding StartButtonText}"
+                                            MinWidth="72" Margin="0,0,6,0" Command="{Binding StartCommand}"/>
+                                    <Button Style="{StaticResource BtnSm}" Content="暂停" MinWidth="48" Margin="0,0,6,0"
+                                            Command="{Binding PauseCommand}"
+                                            Visibility="{Binding PauseVisible, Converter={StaticResource BoolToVis}}"/>
+                                    <Button Style="{StaticResource BtnSm}" Content="打开" MinWidth="48" Margin="0,0,6,0"
+                                            Command="{Binding OpenCommand}"
+                                            Visibility="{Binding OpenVisible, Converter={StaticResource BoolToVis}}"/>
+                                    <Button Style="{StaticResource BtnSm}" Content="删除" MinWidth="48"
+                                            Command="{Binding CancelCommand}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <!-- 状态栏 -->
+        <Grid Grid.Row="4" Margin="2,10,2,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource Hint}" Text="{Binding StatusMessage}"
+                       TextTrimming="CharacterEllipsis"/>
+            <TextBlock Grid.Column="1" Style="{StaticResource Hint}" Margin="16,0,0,0"
+                       Text="解析由内嵌浏览器完成，首次会慢几秒"/>
+        </Grid>
+    </Grid>
+</UserControl>

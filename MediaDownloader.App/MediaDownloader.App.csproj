@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="WPF-UI" Version="4.0.3" />
+    <!-- 抖音详情接口要 a_bogus 签名，交给内嵌浏览器里页面的 JS 去算 -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MediaDownloader.Core\MediaDownloader.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Cookie 图文指导用的截图，编译进程序集，pack URI 引用 -->
+    <Resource Include="Assets\cookie-install.png" />
+    <Resource Include="Assets\cookie-export.png" />
+  </ItemGroup>
+
+</Project>
