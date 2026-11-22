@@ -52,3 +52,5 @@ docs/
 Thumbs.db
 Desktop.ini
 .DS_Store
+# ============== 忽略这个项目的md 文件==============
+README - MORE.md

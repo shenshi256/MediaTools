@@ -39,11 +39,16 @@ echo [提示] 清理调试符号和文档注释 (pdb / xml)...
 del /q "%OUT%\*.pdb"  2>nul
 del /q "%OUT%\*.xml"  2>nul
 
+echo [提示] 重命名主程序为 MediaTools.exe...
+if exist "%OUT%\MediaDownloader.App.exe" (
+  ren "%OUT%\MediaDownloader.App.exe" MediaTools.exe
+)
+
 echo.
 echo ============================================
 echo  发布完成!
 echo  目录: %OUT%
-echo  其中 MediaDownloader.App.exe 是单文件主程序
+echo  其中 MediaTools.exe 是单文件主程序
 echo  (自带 .NET 运行时, 目标机器无需安装)
 echo  tools 目录是下载引擎, 必须和 exe 放一起
 echo ============================================
