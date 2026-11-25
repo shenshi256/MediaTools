@@ -200,7 +200,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    private ICommand? _parseCommand, _downloadCommand, _loginCommand, _logoutCommand, _saveCookieCommand, _browseDirCommand, _browseFfmpegCommand, _selectAllPagesCommand, _clearPagesCommand;
+    private ICommand? _parseCommand, _downloadCommand, _loginCommand, _logoutCommand, _saveCookieCommand, _browseDirCommand, _browseFfmpegCommand, _selectAllPagesCommand, _clearPagesCommand, _goToSettingsCommand;
 
     public ICommand ParseCommand => _parseCommand ??= new AsyncRelayCommand(_ => ParseAsync());
     public ICommand DownloadCommand => _downloadCommand ??= new AsyncRelayCommand(_ => DownloadAsync(), _ => SelectedQuality is not null);
@@ -211,6 +211,9 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     public ICommand BrowseFfmpegCommand => _browseFfmpegCommand ??= new RelayCommand(_ => BrowseFfmpeg());
     public ICommand SelectAllPagesCommand => _selectAllPagesCommand ??= new RelayCommand(_ => SetAllPages(true));
     public ICommand ClearPagesCommand => _clearPagesCommand ??= new RelayCommand(_ => SetAllPages(false));
+
+    /// <summary>底部状态栏「下载目录」「ffmpeg」两个按钮：点击跳到设置页。</summary>
+    public ICommand GoToSettingsCommand => _goToSettingsCommand ??= new RelayCommand(_ => CurrentPageKey = "Settings");
 
     private void SetAllPages(bool selected)
     {

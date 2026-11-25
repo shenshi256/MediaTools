@@ -22,7 +22,11 @@ public partial class MainWindow : Window
             DuplicateHandler = ShowDuplicate
         };
         _vm.Douyin.DuplicateHandler = ShowDuplicate;
+        _vm.Douyin.ConfirmLogoutHandler = ConfirmLogout;
+        _vm.Douyin.ToastHandler = ShowToast;
         _vm.Toutiao.DuplicateHandler = ShowDuplicate;
+        _vm.Toutiao.ConfirmLogoutHandler = ConfirmLogout;
+        _vm.Toutiao.ToastHandler = ShowToast;
         _vm.Tencent.DuplicateHandler = ShowDuplicate;
         _vm.Youtube.DuplicateHandler = ShowDuplicate;
         _vm.Youtube.CookieHelpHandler = ShowCookieHelp;
@@ -128,6 +132,18 @@ public partial class MainWindow : Window
     {
         var window = new CookieHelpWindow { Owner = this };
         window.ShowDialog();
+    }
+
+    private bool ConfirmLogout()
+    {
+        var result = MessageBox.Show(this, "确定要退出登录吗？", "退出登录",
+            MessageBoxButton.OKCancel, MessageBoxImage.Question);
+        return result == MessageBoxResult.OK;
+    }
+
+    private void ShowToast(string message)
+    {
+        Toast.Show(message);
     }
 
     private Dictionary<string, string>? ShowQrLogin(QrSession session, LoginService service)

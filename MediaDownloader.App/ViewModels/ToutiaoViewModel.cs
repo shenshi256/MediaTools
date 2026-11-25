@@ -24,6 +24,12 @@ public sealed class ToutiaoViewModel : ObservableObject, IDisposable
     /// <summary>由主窗口注入：文件已存在时的询问弹窗。</summary>
     public Func<IReadOnlyList<string>, DuplicateChoice>? DuplicateHandler { get; set; }
 
+    /// <summary>由主窗口注入：退出登录前的阻断式确认弹窗，返回是否确认。</summary>
+    public Func<bool>? ConfirmLogoutHandler { get; set; }
+
+    /// <summary>由主窗口注入：轻提示（toast）。</summary>
+    public Action<string>? ToastHandler { get; set; }
+
     private ToutiaoVideo? _video;
     private ToutiaoStream? _selectedQuality;
     private string _inputText = "";
@@ -134,8 +140,29 @@ public sealed class ToutiaoViewModel : ObservableObject, IDisposable
         }
     }
 
-    private void Logout()
+    private async void Logout()
     {
+        // 先查是否真的登录，再决定弹确认框还是 toast
+        bool loggedIn;
+        try
+        {
+            await _browser.EnsureReadyAsync();
+            loggedIn = await _browser.HasLoginCookieAsync();
+        }
+        catch
+        {
+            loggedIn = false;
+        }
+
+        if (!loggedIn)
+        {
+            ToastHandler?.Invoke("您当前还未登录");
+            return;
+        }
+
+        var confirmed = ConfirmLogoutHandler?.Invoke() ?? false;
+        if (!confirmed) return;
+
         _browser.SignOut();
         _isLoggedIn = false;
         LoginStatus = "未登录";

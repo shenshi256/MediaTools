@@ -25,7 +25,7 @@
                             MouseLeftButtonUp="DropZone_Click"
                             DragOver="DropZone_DragOver" DragLeave="DropZone_DragLeave">
                         <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource App.Text3}"
-                                   Text="把 mp4 / mkv 文件拖到这里，或者点击选择（可多选）"/>
+                                   Text="把文件拖到这里，或者点击选择（可多选）"/>
                     </Border>
                     <ItemsControl ItemsSource="{Binding Inputs}" Margin="0,8,0,0">
                         <ItemsControl.ItemsPanel>
